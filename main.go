@@ -1,7 +1,7 @@
 package main
 
-import "xztaityozx/golang-template-cli/cmd"
+import "xztaityozx/tsuna/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }
