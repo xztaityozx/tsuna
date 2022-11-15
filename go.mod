@@ -5,8 +5,10 @@ go 1.19
 require (
 	github.com/mattn/go-gimei v0.0.3
 	github.com/mitchellh/go-ps v1.0.0
+	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
 	github.com/samber/lo v1.34.0
+	github.com/sbinet/pstree v0.3.0
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.1
 )

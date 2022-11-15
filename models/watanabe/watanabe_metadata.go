@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type Watanabe struct {
+type Metadata struct {
 	Last  string
 	First string
 	yomi  string
@@ -15,17 +15,17 @@ type Watanabe struct {
 
 var watanabeLastNames = []string{"渡辺", "渡邊", "渡邉"}
 
-func (w Watanabe) String() string {
-	return fmt.Sprintf("私は %s %s (ワタナベ %s) です", w.Last, w.First, w.yomi)
+func (w Metadata) String() string {
+	return fmt.Sprintf("%s %s (ワタナベ %s)", w.Last, w.First, w.yomi)
 }
 
-func (w Watanabe) FullName() string {
+func (w Metadata) FullName() string {
 	return w.Last + w.First
 }
 
 // New は新しい WatanabeMetadata を作って返す
-func New() Watanabe {
+func New() Metadata {
 	rand.Seed(time.Now().UnixMicro())
 	g := gimei.NewName().First
-	return Watanabe{yomi: g.Katakana(), First: g.Kanji(), Last: watanabeLastNames[rand.Intn(3)]}
+	return Metadata{yomi: g.Katakana(), First: g.Kanji(), Last: watanabeLastNames[rand.Intn(3)]}
 }

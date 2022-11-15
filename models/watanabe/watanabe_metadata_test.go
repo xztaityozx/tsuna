@@ -8,9 +8,9 @@ import (
 func TestNew(t *testing.T) {
 	tests := []struct {
 		name string
-		want Watanabe
+		want Metadata
 	}{
-		{"Newできるべき", Watanabe{First: ""}},
+		{"Newできるべき", Metadata{First: ""}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

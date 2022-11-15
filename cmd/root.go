@@ -11,16 +11,16 @@ import (
 
 var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(watanabeMetadata)
+		fmt.Printf("私は %s です\n", watanabeMetadata)
 	},
 }
 
-var watanabeMetadata watanabe.Watanabe
+var watanabeMetadata watanabe.Metadata
 
 func init() {
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
-	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 	watanabeMetadata = watanabe.New()
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}).With().Str("ワタナベ名", watanabeMetadata.String()).Logger()
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 }
 
 func Execute() {
@@ -29,9 +29,8 @@ func Execute() {
 	if err != nil {
 		log.Fatal().
 			Err(err).
-			Str("ワタナベ名", watanabeMetadata.FullName()).
-			Msg("急に死んでしまった！")
+			Msg("討伐できませんでした")
 	}
 
-	log.Info().Str("ワタナベ名", watanabeMetadata.FullName()).Msg("このワタナベは役目を終えました")
+	log.Info().Msg("このワタナベは役目を終えました")
 }
