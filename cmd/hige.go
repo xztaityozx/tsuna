@@ -3,31 +3,29 @@ package cmd
 import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"os"
 	"strconv"
 	"xztaityozx/tsuna/services/signal"
 )
 
 var higeCmd = &cobra.Command{
-	Use:  "hige",
+	Use:  "hige [pid]",
+	Long: `プロセスに SIGHUP => SIGQUIT => SIGINT => SIGKILL の順番でシグナルを送信します`,
 	Args: cobra.MinimumNArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		pid, err := strconv.Atoi(args[0])
 		if err != nil {
-			log.Panic().Err(err).Msg("第一引数は数値であるべきです")
+			log.Fatal().Err(err).Msg("第一引数は数値であるべきです")
 		}
 
-		proc, err := os.FindProcess(pid)
-		if err != nil {
-			log.Panic().Err(err).Msg("討伐対象のプロセスを見つけられませんでした")
-		}
-		sender := signal.NewSender(&log.Logger)
-		if err := sender.Send(proc); err != nil {
-			log.Panic().Err(err).Msg("討伐できませんでした")
-		}
+		failOnError, _ := cmd.Flags().GetBool("failOnError")
+		sender := signal.NewSender(&log.Logger, failOnError)
+		return sender.Send(pid)
 	},
+	SilenceUsage:  true,
+	SilenceErrors: true,
 }
 
 func init() {
+	higeCmd.Flags().BoolP("failOnError", "f", false, "シグナル送信時に失敗したとき、処理を中断します")
 	rootCmd.AddCommand(higeCmd)
 }
