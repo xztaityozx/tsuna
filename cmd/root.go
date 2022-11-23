@@ -6,21 +6,27 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"os"
-	"xztaityozx/tsuna/models/watanabe"
+	"tsuna/models/watanabe"
 )
 
+var jsonLogging = false
 var rootCmd = &cobra.Command{
+	Long: `プロセスに SIGQUIT => SIGHUP => SIGINT => SIGTERM => SIGKILLの順番でシグナルを送信します。いろんな方法で送信します`,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+		if !jsonLogging {
+			// jsonLogじゃないときはConsoleLoggerにする
+			log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}).With().Logger()
+		}
+	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("私は %s です\n", watanabeMetadata)
+		log.Info().Send()
+		fmt.Printf("私は %s です\n", watanabe.New())
 	},
 }
 
-var watanabeMetadata watanabe.Metadata
-
 func init() {
-	watanabeMetadata = watanabe.New()
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}).With().Str("ワタナベ名", watanabeMetadata.String()).Logger()
-	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	rootCmd.PersistentFlags().BoolVar(&jsonLogging, "json-log", false, "ログ出力をJSON形式にします")
 }
 
 func Execute() {
@@ -28,9 +34,6 @@ func Execute() {
 
 	if err != nil {
 		log.Fatal().
-			Err(err).
-			Msg("討伐できませんでした")
+			Err(err).Send()
 	}
-
-	log.Info().Msg("このワタナベは役目を終えました")
 }

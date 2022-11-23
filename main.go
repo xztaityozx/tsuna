@@ -1,6 +1,6 @@
 package main
 
-import "xztaityozx/tsuna/cmd"
+import "tsuna/cmd"
 
 func main() {
 	cmd.Execute()
