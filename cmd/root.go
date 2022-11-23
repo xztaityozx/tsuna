@@ -11,7 +11,8 @@ import (
 
 var jsonLogging = false
 var rootCmd = &cobra.Command{
-	Long: `プロセスに SIGQUIT => SIGHUP => SIGINT => SIGTERM => SIGKILLの順番でシグナルを送信します。いろんな方法で送信します`,
+	Long:    `プロセスに SIGQUIT => SIGHUP => SIGINT => SIGTERM => SIGKILLの順番でシグナルを送信します。いろんな方法で送信します`,
+	Version: "0.0.1",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 		if !jsonLogging {
