@@ -21,7 +21,6 @@ var rootCmd = &cobra.Command{
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Info().Send()
 		fmt.Printf("私は %s です\n", watanabe.New())
 	},
 }
