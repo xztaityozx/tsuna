@@ -22,7 +22,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.46.1
+          version: latest
   test:
     name: Unit Test
     needs: [linter]
