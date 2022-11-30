@@ -17,7 +17,7 @@ var higeCmd = &cobra.Command{
 			log.Fatal().Err(err).Msg("第一引数は数値であるべきです")
 		}
 
-		failOnError, _ := cmd.Flags().GetBool("failOnError")
+		giveUpOnError, _ := cmd.Flags().GetBool("giveUpOnError")
 		interval, err := cmd.Flags().GetDuration("interval")
 		if err != nil {
 			return err
@@ -26,10 +26,10 @@ var higeCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		sender := sender.NewSender(failOnError, interval, attempt)
+		sender := sender.NewSender(giveUpOnError, interval, attempt)
 		result, err := sender.Send(pid)
 
-		logger := log.Logger.With().Int("pid", result.Process.Pid).Str("シグナル", result.SentSignal.String()).Logger()
+		logger := log.Logger.With().Int("pid", result.Process.Pid).Str("シグナル", result.LastSignal.String()).Logger()
 
 		if result.Ok {
 			logger.Info().Msg("討伐が完了しました")
@@ -44,7 +44,7 @@ var higeCmd = &cobra.Command{
 }
 
 func init() {
-	higeCmd.Flags().BoolP("failOnError", "f", false, "シグナル送信時に失敗したとき、処理を中断します")
+	higeCmd.Flags().BoolP("giveUpOnError", "f", false, "シグナル送信時に失敗したとき、処理を中断します")
 	higeCmd.Flags().DurationP("interval", "i", 1*time.Second, "プロセスが停止したかどうかを調べるまでの時間です")
 	higeCmd.Flags().IntP("attempt", "n", 5, "プロセスが停止したかどうかを調べる回数です")
 	rootCmd.AddCommand(higeCmd)

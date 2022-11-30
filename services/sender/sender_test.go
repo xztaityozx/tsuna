@@ -17,7 +17,7 @@ func TestNew(t *testing.T) {
 		args args
 		want *Sender
 	}{
-		{"Newできるべき", args{failOnError: false, watchInterval: 1 * time.Second, watchAttempt: 1}, &Sender{failOnError: false, watchInterval: 1 * time.Second, watchAttempt: 1}},
+		{"Newできるべき", args{failOnError: false, watchInterval: 1 * time.Second, watchAttempt: 1}, &Sender{giveUpOnError: false, watchInterval: 1 * time.Second, watchAttempt: 1}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
