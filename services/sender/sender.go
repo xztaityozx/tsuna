@@ -82,9 +82,9 @@ var sendOrder = []os.Signal{
 	syscall.SIGQUIT,
 	syscall.SIGINT,
 	syscall.SIGHUP,
+	syscall.SIGTERM,
 	syscall.SIGPIPE,
 	syscall.SIGSEGV,
 	syscall.SIGALRM,
-	syscall.SIGTERM,
 	syscall.SIGKILL,
 }
