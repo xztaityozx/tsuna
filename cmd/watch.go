@@ -3,12 +3,13 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/pkg/errors"
 	"os/signal"
 	"sync"
 	"syscall"
 	"time"
 	"tsuna/services/sender"
+
+	"github.com/pkg/errors"
 
 	"github.com/mitchellh/go-ps"
 	"github.com/rs/zerolog/log"
@@ -105,7 +106,7 @@ func dispatcher(ctx context.Context, queue chan<- int, filterFunc func(process p
 			for _, pid := range lo.Uniq(lo.Map(lo.Filter(processes, filterFunc), func(p ps.Process, _ int) int { return p.Pid() })) {
 				// 一回見つけたプロセスは送信しない
 				if _, ok := dict[pid]; ok {
-					log.Info().Int("pid", pid).Msg("プロセスを見つけましたが、すでに補足したものであったためスキップしました")
+					log.Debug().Int("pid", pid).Msg("プロセスを見つけましたが、すでに補足したものであったためスキップしました")
 					continue
 				} else {
 					log.Info().Int("pid", pid).Msg("プロセスが見つかりました")
